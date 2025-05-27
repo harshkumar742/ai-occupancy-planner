@@ -1,0 +1,18 @@
+{
+    "sensors": [
+        {
+            "id": "sensor-001",
+            "type": "occupancy",
+            "status": "active",
+            "area_id": "area-001",
+            "last_reading": "2025-05-07T09:25:00Z"
+        },
+        {
+            "id": "sensor-002",
+            "type": "occupancy",
+            "status": "active",
+            "area_id": "area-002",
+            "last_reading": "2025-05-07T09:25:00Z"
+        }
+    ]
+}

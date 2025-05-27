@@ -1,0 +1,18 @@
+{
+    "metrics": [
+        {
+            "area_id": "area-001",
+            "date": "2025-05-06",
+            "peak_occupancy": 90,
+            "average_occupancy": 65,
+            "utilization_rate": 0.72
+        },
+        {
+            "area_id": "area-002",
+            "date": "2025-05-06",
+            "peak_occupancy": 85,
+            "average_occupancy": 60,
+            "utilization_rate": 0.68
+        }
+    ]
+}
