@@ -14,8 +14,9 @@ An Express.js API that recommends desks based on natural-language queries, integ
 1. Clone the repo:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/harshkumar742/ai-occupancy-planner.git
    cd ai-occupancy-planner
+   ```
 
 2. Install dependencies:
 
@@ -25,19 +26,19 @@ An Express.js API that recommends desks based on natural-language queries, integ
 
 ## Configuration
 
-1. Add your openai api key in `.env` file in the project root:
+Add your openai api key in `.env` file in the project root:
 
-    ```env
+   ```bash
     OPENAI_API_KEY=your_openai_api_key_here
-        ```
+   ```
 
 ## Running the Application
 
 Start the server:
 
-    ```bash
+   ```bash
     npm start
-    ```
+   ```
 
 The API will listen on `http://localhost:3000`
 
@@ -45,9 +46,9 @@ The API will listen on `http://localhost:3000`
 
 Interactive docs powered by Swagger are available at:
 
-    ```http
+   ```bash
     http://localhost:3000/docs
-    ```
+   ```
 
 ## Usage
 
