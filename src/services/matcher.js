@@ -99,13 +99,13 @@ export async function matchDesks({ employeeId, query }) {
     const accessibilityNeed = parsed.accessibility_needs ?? baseAccessibility;
 
     // BUILD LOOKUP MAPS
-    // 3a. Live occupancy map (area_id -> occupancy_percentage)
+    // Live occupancy map (area_id -> occupancy_percentage)
     const occMap = {};
     occData.occupancy_data.forEach(({ area_id, occupancy_percentage }) => {
         occMap[area_id] = occupancy_percentage;
     });
 
-    // 3b. Latest metrics map (area_id -> most recent metrics object)
+    // Latest metrics map (area_id -> most recent metrics object)
     const metricsMap = {};
     metricsData.metrics.forEach(m => {
         const existing = metricsMap[m.area_id];
@@ -114,19 +114,19 @@ export async function matchDesks({ employeeId, query }) {
         }
     });
 
-    // 3c. Sensor health map (area_id -> { status, lastReading })
+    // Sensor health map (area_id -> { status, lastReading })
     const sensorMap = {};
     sensorsData.sensors.forEach(s => {
         sensorMap[s.area_id] = { status: s.status, lastReading: new Date(s.last_reading) };
     });
 
-    // 4. CASCADING FILTERS
+    // CASCADING FILTERS
     const candidates = desksData.desks.filter(d => {
-        // 4a. AVAILABILITY: must be free
+        // AVAILABILITY: must be free
         if (d.status !== 'available') return false;
-        // 4b. DESK TYPE: enforce if user specified
+        // DESK TYPE: enforce if user specified
         if (finalDeskType && d.type !== finalDeskType) return false;
-        // 4c. EQUIPMENT & PREFERENCE
+        // EQUIPMENT & PREFERENCE
         //    - Standing desk only if preferred
         if (d.type === 'standing' && !deskPreferences.includes('standing')) {
             return false;
@@ -136,7 +136,7 @@ export async function matchDesks({ employeeId, query }) {
             if (!d.features.includes(need)) return false;
         }
 
-        // 4d. LOCATION PREFERENCE
+        // LOCATION PREFERENCE
         if (preferredLocation) {
             if (d.zone !== preferredLocation) {
                 // If zone mismatch, check parent floor name
@@ -147,14 +147,14 @@ export async function matchDesks({ employeeId, query }) {
             }
         }
 
-        // 4e. CAPACITY POLICY (POL-005)
+        // CAPACITY POLICY (POL-005)
         const capPolicy = policiesData.policies.find(p => p.id === 'POL-005');
         if (capPolicy && occMap[d.area_id] >= 80) {
             // Reject if occupancy ≥ 80%
             return false;
         }
 
-        // 4f. SANITIZATION POLICY (POL-002)
+        // SANITIZATION POLICY (POL-002)
         const sanPolicy = policiesData.policies.find(p => p.id === 'POL-002');
         if (sanPolicy) {
             const hoursSinceLastUse = (now - new Date(d.last_used)) / (1000 * 60 * 60);
@@ -164,7 +164,7 @@ export async function matchDesks({ employeeId, query }) {
             }
         }
 
-        // 4g. ACCESSIBILITY POLICY (POL-003)
+        // ACCESSIBILITY POLICY (POL-003)
         if (accessibilityNeed) {
             const desc = (d.location_description || '').toLowerCase();
             if (!d.features.includes(accessibilityNeed) && !desc.includes(accessibilityNeed)) {
@@ -173,7 +173,7 @@ export async function matchDesks({ employeeId, query }) {
             }
         }
 
-        // 4h. SENSOR HEALTH CHECK
+        // SENSOR HEALTH CHECK
         const sensor = sensorMap[d.area_id];
         if (sensor) {
             // Must be active
@@ -220,7 +220,7 @@ export async function matchDesks({ employeeId, query }) {
         return utilA - utilB;
     });
 
-    // === 7. FINAL OUTPUT ===
+    // FINAL OUTPUT
     // Place adjacency-preferred desks first, then others
     return [...sorter(adjList), ...sorter(otherList)];
 }
