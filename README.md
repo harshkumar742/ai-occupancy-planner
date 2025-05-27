@@ -63,7 +63,7 @@ Recommend desks based on a natural-language query.
     ```json
     {
         "employeeId": "", // optional
-        "query": "Find me an available standing desk near the marketing team on the 3rd floor for tomorrow afternoon." // required
+        "query": "Find me an available standing desk near the marketing team on the 3rd floor." // required
     }
     ```
 - **Response Bosy:**
